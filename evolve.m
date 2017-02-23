@@ -1,7 +1,10 @@
-function [ B ] = evolve( S, T, N, E )
+function [ B ] = evolve( targets, T, N, E, targetCount )
 
 G = zeros(N,1);
 B = zeros(N);
+targetIndex = 1
+currentTarget = targets(targetIndex,:);
+targetSwitchCountdown = targetCount;
 
 for evolCount = 1:E
     [Gmut,Bmut] = mutate(G,B,N);
@@ -9,11 +12,15 @@ for evolCount = 1:E
     Pstar = Pstar(:,T+1);
     PstarMut = develop(Gmut, Bmut, T, N);
     PstarMut = PstarMut(:,T+1);
-    w = fitness(Pstar, S);
-    wMut = fitness(PstarMut, S);
+    w = fitness(Pstar, currentTarget);
+    wMut = fitness(PstarMut, currentTarget);
     if (wMut > w)
         G = Gmut;
         B = Bmut;
+    end
+    if (targetCount > -1)
+        targetSwitchCountdown = targetSwitchCountdown - 1;
+        
     end
 end
 
