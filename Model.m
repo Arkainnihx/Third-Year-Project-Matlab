@@ -1,12 +1,12 @@
 clearvars
 geneCount = 8;
 developmentTime = 10;
-generations = 100000;
-targetCount = 2000;
+generationCount = 800000;
+targetSwitchCount = 2000;
 targets = [1  1 -1 -1 -1  1 -1  1;
            1 -1  1 -1  1 -1 -1 -1];
 
-B = evolve(targets, developmentTime, geneCount, generations, targetCount);
+B = evolve(targets, developmentTime, geneCount, generationCount, targetSwitchCount);
 
 sampleSize = 30;
 samplePop = randn(sampleSize,8);

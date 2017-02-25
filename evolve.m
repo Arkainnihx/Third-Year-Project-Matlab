@@ -1,26 +1,30 @@
-function [ B ] = evolve( targets, T, N, E, targetCount )
+function [ B ] = evolve( targets, developmentTime, geneCount, generationCount, targetSwitchValue )
 
-G = zeros(N,1);
-B = zeros(N);
-targetIndex = 1
+G = zeros(geneCount,1);
+B = zeros(geneCount);
+targetIndex = 1;
 currentTarget = targets(targetIndex,:);
-targetSwitchCountdown = targetCount;
+targetSwitchCount = 0;
 
-for evolCount = 1:E
-    [Gmut,Bmut] = mutate(G,B,N);
-    Pstar = develop(G, B, T, N);
-    Pstar = Pstar(:,T+1);
-    PstarMut = develop(Gmut, Bmut, T, N);
-    PstarMut = PstarMut(:,T+1);
+for evolCount = 1:generationCount
+    [Gmut,Bmut] = mutate(G,B,geneCount);
+    Pstar = develop(G, B, developmentTime, geneCount);
+    Pstar = Pstar(:,developmentTime+1);
+    PstarMut = develop(Gmut, Bmut, developmentTime, geneCount);
+    PstarMut = PstarMut(:,developmentTime+1);
     w = fitness(Pstar, currentTarget);
     wMut = fitness(PstarMut, currentTarget);
     if (wMut > w)
         G = Gmut;
         B = Bmut;
     end
-    if (targetCount > -1)
-        targetSwitchCountdown = targetSwitchCountdown - 1;
-        
+    if (targetSwitchValue > -1)
+        targetSwitchCount = targetSwitchCount + 1;
+        if (targetSwitchCount == targetSwitchValue)
+            targetIndex = switchTargets(targets,targetIndex);
+            currentTarget = targets(targetIndex,:);
+            targetSwitchCount = 0;
+        end
     end
 end
 
