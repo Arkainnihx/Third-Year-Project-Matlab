@@ -1,9 +1,9 @@
-function [ P ] = develop( G, B, T, N )
+function [ P ] = develop( G, B, developmentTime, geneCount )
 
-P = zeros(N,T+1);
+P = zeros(geneCount,developmentTime+1);
 P(:,1) = G;
-for devStep = 1:T
-    P(:,devStep+1) = 0.8*P(:,devStep) + tanh(B * P(:,devStep));
+for devCount = 1:developmentTime
+    P(:,devCount+1) = 0.8*P(:,devCount) + tanh(B * P(:,devCount));
 end
 
 end

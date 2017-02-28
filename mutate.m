@@ -10,6 +10,7 @@ elseif (Gmut(Gindex) < -1)
     Gmut(Gindex) = -1;
 end
 
+%Will need adapting for sparse Bs.
 Bmut = B;
 if (rand(1) <= 0.067)
     Bindex = randi(N,[1,2]);
